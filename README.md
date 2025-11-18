@@ -1,60 +1,145 @@
-Foodify – Smart Food Ordering and Delivery System
-2. Problem Statement
-Ordering food during peak hours in college canteens or local restaurants often leads to long
-queues, confusion, and order delays. Foodify aims to simplify this process by providing a
-digital food ordering system where users can browse menus, place online orders, make
-secure payments, and track order status in real time.
-3. System Architecture
-Frontend → Backend (API) → Database
-Frontend: React.js with React Router and Axios for API calls
-Backend: Node.js + Express.js REST API
-Database: MySQL (relational)
-Authentication: JWT-based user login/signup system
-Hosting: Frontend (Vercel / Netlify), Backend (Render / Railway), Database (PlanetScale /
-Aiven MySQL Cloud)
-4. Key Features
-Category Features
-Authentication & Authorization User registration, login, logout, password
-encryption (bcrypt), role-based access
-(user/admin)
-Menu Management Admin can add, update, or delete food
-items with name, price, image, and
-category
-Cart & Orders Users can add items to cart, view total cost,
-place orders
-Order Tracking Real-time order status: “Pending →
-Preparing → Ready → Completed”
-Payments (Optional) Razorpay or Stripe integration for secure
-online payments
-Search & Filters Filter by category (Snacks, Meals, Drinks),
-Profile & History Hosting search by name
-View past orders and re-order with one
-click
-Both backend and frontend deployed on
-cloud platforms
-5. Tech Stack
-Layer Technologies
-Frontend React.js, React Router, Axios, TailwindCSS
-Backend Node.js, Express.js
-Database MySQL
-Authentication JWT, bcrypt
-Hosting Vercel (frontend), Render (backend),
-PlanetScale (MySQL)
-6. API Overview
-Endpoint Method Description Access
-/api/auth/signup POST Register a new user Public
-/api/auth/login POST Authenticate user
-and return JWT
-Public
-/api/foods GET Fetch all food items Public
-/api/foods/:id GET Fetch a single food
-Public
-item
-/api/foods POST Add a new food item Admin only
-/api/foods/:id PUT Update food item Admin only
-/api/foods/:id DELETE Delete food item Admin only
-/api/cart GET View items in cart Authenticated
-/api/cart POST Add item to cart Authenticated
-/api/orders POST Place order Authenticated
-/api/orders GET Get all user orders Authenticated
-/api/orders/:id/status PUT Update order status Admin only
+# BlogifyX – Multi-User Blogging & Commenting Platform
+
+## 1. Project Title
+**BlogifyX** – A modern, multi-user blogging platform with rich editing, comments, moderation, and role-based access.
+
+---
+
+## 2. Problem Statement
+Modern writers and readers need a clean and distraction-free environment to publish and discuss ideas. Existing blogging platforms often feel cluttered, overly complex, or lack proper moderation tools.
+
+**BlogifyX** solves this by providing:
+- A minimal and user-friendly interface  
+- Role-based access control (reader, author, editor, admin)  
+- A structured blogging system with post creation, comments, and moderation  
+- Scalable architecture suitable for production deployment  
+
+---
+
+## 3. System Architecture
+
+### Overall Flow
+**Frontend → Backend API → Database**
+
+### Frontend
+- React.js  
+- React Router  
+- Hosted on  **Vercel**
+
+### Backend
+- Node.js  
+- Express.js  
+- Hosted on **Render**
+
+### Database
+- PostgreSQL  
+- Prisma ORM  
+- Hosted on **Neon**
+
+### Authentication
+- JWT-based login and signup  
+- Access + Refresh tokens
+
+---
+
+## 5. Key Features
+
+### 🔐 Authentication & Roles
+- Email-based signup & login  
+- Logout functionality  
+- Role-based access: **reader**, **author**, **editor**, **admin**  
+- JWT authentication with refresh tokens  
+
+### ✏️ CRUD Operations
+- Create, edit, delete, publish, and unpublish posts  
+- Tag & category management  
+- Comment add/edit/delete functionality  
+- Like/unlike posts  
+- Bookmark/unbookmark posts  
+
+### 🚦 Frontend Routing
+Pages include:
+- Home  
+- Login / Signup  
+- Post Detail  
+- Author Profile  
+- Tag Page & Category Page  
+- Dashboard (My Posts)  
+
+### 🖼️ Editor & Media Handling
+- Full rich-text editor  
+- Cover image upload  
+- Auto slug generation  
+- Reading time calculation  
+
+### 💬 Comments & Moderation
+- Nested comments  
+- Users can edit/delete their own comments  
+- Moderators can flag or hide comments  
+
+### ☁️ Hosting
+- Fully deployed frontend & backend  
+- Proper use of environment variables  
+
+---
+
+## 6. Tech Stack
+
+### Frontend
+- React.js  
+- React Router  
+- CSS  
+
+### Backend
+- Node.js  
+- Express.js  
+- bcrypt  
+- Prisma ORM  
+
+### Database
+- PostgreSQL (Neon)
+
+### Authentication
+- JWT (Access + Refresh tokens)
+
+### Hosting
+- Frontend: **Vercel** 
+- Backend: **Render** 
+- Database: **Neon**
+
+---
+
+## 7. API Overview (Sample Endpoints)
+
+### Authentication
+- `POST /api/auth/signup` — Register new user  
+- `POST /api/auth/login` — Login and receive tokens  
+- `POST /api/auth/refresh` — Refresh access token  
+
+### Posts
+- `GET /api/posts` — Fetch all posts (with filters)  
+- `GET /api/posts/:slug` — Get a single post  
+- `POST /api/posts` — Create new post (author only)  
+- `PATCH /api/posts/:id` — Edit post  
+- `DELETE /api/posts/:id` — Delete post (owner/admin)  
+
+### Comments
+- `GET /api/posts/:id/comments` — Get comments  
+- `POST /api/posts/:id/comments` — Add comment  
+- `PATCH /api/comments/:id` — Edit or soft-delete comment  
+
+### Reactions
+- `POST /api/posts/:id/react` — Like/unlike a post  
+- `POST /api/posts/:id/bookmark` — Bookmark/unbookmark post  
+
+---
+
+## 📌 License
+This project can include your preferred license (MIT, Apache, etc.).
+
+---
+
+## 📞 Contact
+For support or collaboration, feel free to reach out!
+
+
