@@ -24,12 +24,12 @@ Modern writers and readers need a clean and distraction-free environment to publ
 ### Frontend
 - React.js  
 - React Router  
-- Hosted on  **Vercel**
+- Hosted on  **Vercel** { https://blogify-7752.vercel.app/ }
 
 ### Backend
 - Node.js  
 - Express.js  
-- Hosted on **Render**
+- Hosted on **Render** { https://blogify-9ljq.onrender.com }
 
 ### Database
 - PostgreSQL  
