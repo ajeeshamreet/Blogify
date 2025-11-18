@@ -6,7 +6,7 @@ import axios from "axios";
 //     : "https://blogify-9ljq.onrender.com/api";
 
 export const API = axios.create({
-  baseURL: 'https://blogify-9ljq.onrender.com',
+  baseURL: 'https://blogify-9ljq.onrender.com/api',
   withCredentials: true,
 });
 
