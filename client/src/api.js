@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const BASE_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:8080/api"
-    : "https://blogify-9ljq.onrender.com/api";
+// const BASE_URL =
+//   window.location.hostname === "localhost"
+//     ? "http://localhost:8080/api"
+//     : "https://blogify-9ljq.onrender.com/api";
 
 export const API = axios.create({
-  baseURL: BASE_URL,
+  baseURL: 'https://blogify-9ljq.onrender.com',
   withCredentials: true,
 });
 

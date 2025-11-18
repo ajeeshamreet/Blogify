@@ -18,9 +18,9 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173", 
+    origin: [ 
       "https://blogify-7752.vercel.app/",  
+      "http://localhost:5173",
       process.env.FRONTEND_URL, 
     ],
     credentials: true, 
