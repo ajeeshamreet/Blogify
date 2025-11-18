@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL =
   window.location.hostname === "localhost"
     ? "http://localhost:8080/api"
-    : "https://foodify-server-1.onrender.com/api";
+    : "https://blogify-9ljq.onrender.com/api";
 
 export const API = axios.create({
   baseURL: BASE_URL,

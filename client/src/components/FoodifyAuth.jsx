@@ -63,8 +63,8 @@ export default function FoodifyAuth() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h1>Foodify</h1>
-        <p className="subtitle">Smart Food Ordering & Delivery System</p>
+        <h1>Blogify</h1>
+        <p className="subtitle"></p>
 
         {!user ? (
           <AuthForm
