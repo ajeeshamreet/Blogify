@@ -20,7 +20,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", 
-      "https://foodify-ochre.vercel.app",  
+      "https://blogify-7752.vercel.app/",  
       process.env.FRONTEND_URL, 
     ],
     credentials: true, 
