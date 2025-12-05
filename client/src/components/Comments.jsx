@@ -26,12 +26,21 @@ const Comments = ({ postId }) => {
     const handleClick = async (e) => {
         e.preventDefault();
         if (!desc.trim()) return;
+        if (!currentUser) {
+            alert('Please login to comment');
+            return;
+        }
         try {
             const res = await api.post(`/posts/${postId}/comments`, { content: desc });
             setComments((prev) => [...prev, res.data]);
             setDesc("");
         } catch (err) {
-            console.log(err);
+            console.error('Comment error:', err);
+            if (err.response?.status === 401) {
+                alert('Please login to comment');
+            } else {
+                alert('Failed to post comment. Please try again.');
+            }
         }
     };
 

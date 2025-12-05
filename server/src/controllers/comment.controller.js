@@ -6,28 +6,33 @@ export const createComment = async (req, res) => {
     try {
         const { postId } = req.params;
         const { content, parentId } = req.body;
+        
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: "You must be logged in to comment" });
+        }
+        
         const authorId = req.user.id;
 
-        if (!content) {
+        if (!content || !content.trim()) {
             return res.status(400).json({ message: "Content is required" });
         }
 
         const comment = await prisma.comment.create({
             data: {
-                content,
+                content: content.trim(),
                 postId,
                 authorId,
-                parentId,
+                parentId: parentId || null,
             },
             include: {
-                author: { select: { id: true, username: true } },
+                author: { select: { id: true, username: true, role: true } },
             },
         });
 
         res.status(201).json(comment);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Failed to create comment" });
+        console.error('Create comment error:', error);
+        res.status(500).json({ message: "Failed to create comment", error: error.message });
     }
 };
 
