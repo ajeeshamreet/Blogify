@@ -30,24 +30,36 @@ const Home = () => {
             setLoading(true);
             try {
                 const params = new URLSearchParams();
-                params.append("page", page);
-                params.append("limit", 6); // 6 posts per page
+                if (sort === "title") {
+                    params.append("page", 1);
+                    params.append("limit", 1000);
+                } else {
+                    params.append("page", page);
+                    params.append("limit", 6);
+                }
                 if (category) params.append("category", category);
                 if (tag) params.append("tag", tag);
                 if (search) params.append("search", search);
+                if (sort === "oldest") params.append("sort", "oldest");
 
                 const res = await api.get(`/posts?${params.toString()}`);
                 let fetchedPosts = res.data.posts || [];
                 
-                // Client-side sorting
-                if (sort === "oldest") {
-                    fetchedPosts = [...fetchedPosts].reverse();
-                } else if (sort === "title") {
+                if (sort === "title") {
                     fetchedPosts = [...fetchedPosts].sort((a, b) => a.title.localeCompare(b.title));
+                    const startIndex = (page - 1) * 6;
+                    const endIndex = startIndex + 6;
+                    setPosts(fetchedPosts.slice(startIndex, endIndex));
+                    setPagination({
+                        page,
+                        limit: 6,
+                        total: fetchedPosts.length,
+                        totalPages: Math.ceil(fetchedPosts.length / 6)
+                    });
+                } else {
+                    setPosts(fetchedPosts);
+                    setPagination(res.data.pagination || {});
                 }
-                
-                setPosts(fetchedPosts);
-                setPagination(res.data.pagination || {});
             } catch (err) {
                 console.error("Error fetching posts:", err);
                 setPosts([]);
@@ -265,7 +277,12 @@ const Home = () => {
                                     </div>
                                     <div className="content">
                                         <Link className="link" to={`/post/${post.slug}`}>
-                                            <h1>{post.title}</h1>
+                                            <h1 dangerouslySetInnerHTML={{ 
+                                                __html: search ? post.title.replace(
+                                                    new RegExp(search, 'gi'), 
+                                                    match => `<mark style="background: yellow; padding: 2px;">${match}</mark>`
+                                                ) : post.title 
+                                            }} />
                                         </Link>
                                         {post.categories && post.categories.length > 0 && (
                                             <div style={{ marginBottom: "10px" }}>

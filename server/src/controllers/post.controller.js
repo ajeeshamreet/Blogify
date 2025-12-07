@@ -70,7 +70,7 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
     try {
-        const { page = 1, limit = 10, category, tag, search } = req.query;
+        const { page = 1, limit = 10, category, tag, search, sort } = req.query;
         const skip = (page - 1) * limit;
 
         const where = {
@@ -92,11 +92,16 @@ export const getPosts = async (req, res) => {
             ];
         }
 
+        let orderBy = { createdAt: "desc" };
+        if (sort === "oldest") {
+            orderBy = { createdAt: "asc" };
+        }
+
         const posts = await prisma.post.findMany({
             where,
             skip: parseInt(skip),
             take: parseInt(limit),
-            orderBy: { createdAt: "desc" },
+            orderBy,
             include: {
                 author: { select: { id: true, username: true, role: true } },
                 categories: true,
@@ -159,12 +164,22 @@ export const updatePost = async (req, res) => {
             return res.status(404).json({ message: "Post not found" });
         }
 
-        
-        
         const user = await prisma.user.findUnique({ where: { id: userId } });
 
         if (post.authorId !== userId && user.role !== "ADMIN" && user.role !== "EDITOR") {
             return res.status(403).json({ message: "Forbidden" });
+        }
+
+        let slug = post.slug;
+        if (title && title !== post.title) {
+            slug = slugify(title, { lower: true, strict: true });
+            let existingSlug = await prisma.post.findFirst({ where: { slug, NOT: { id } } });
+            let counter = 1;
+            while (existingSlug) {
+                slug = `${slugify(title, { lower: true, strict: true })}-${counter}`;
+                existingSlug = await prisma.post.findFirst({ where: { slug, NOT: { id } } });
+                counter++;
+            }
         }
 
         const readingTime = content ? calculateReadingTime(content) : post.readingTime;
@@ -173,13 +188,14 @@ export const updatePost = async (req, res) => {
             where: { id },
             data: {
                 title,
+                slug,
                 content,
                 excerpt,
                 coverImage,
                 published,
                 readingTime,
                 categories: categories ? {
-                    set: [], 
+                    set: [],
                     connectOrCreate: categories.map((cat) => ({
                         where: { name: cat },
                         create: { name: cat },
@@ -193,12 +209,17 @@ export const updatePost = async (req, res) => {
                     })),
                 } : undefined,
             },
+            include: {
+                author: { select: { id: true, username: true, role: true } },
+                categories: true,
+                tags: true,
+            },
         });
 
         res.json(updatedPost);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Failed to update post" });
+        console.error('Update post error:', error);
+        res.status(500).json({ message: "Failed to update post", error: error.message });
     }
 };
 
